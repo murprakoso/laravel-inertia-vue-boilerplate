@@ -6,6 +6,7 @@
         "build": "vite build"
     },
     "devDependencies": {
+        "@fortawesome/fontawesome-free": "^6.4.2",
         "@inertiajs/vue3": "^1.0.0",
         "@tailwindcss/forms": "^0.5.3",
         "@vitejs/plugin-vue": "^4.0.0",
@@ -17,5 +18,7 @@
         "vite": "^4.0.0",
         "vue": "^3.2.41"
     },
-    "dependencies": {}
+    "dependencies": {
+        "@heroicons/vue": "^2.0.18"
+    }
 }

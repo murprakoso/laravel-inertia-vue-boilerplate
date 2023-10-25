@@ -43,8 +43,10 @@ watch(showingNavigationDropdown, (value) => {
                     </svg>
                 </button>
 
-                <header class="block sm:flex items-center">
-                    <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100 ml-2">Profile Information</h2>
+                <header class="block sm:flex items-center" v-if="$slots.header">
+                    <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100 ml-2">
+                        <slot name="header"/>
+                    </h2>
                 </header>
             </div>
 
@@ -100,8 +102,8 @@ watch(showingNavigationDropdown, (value) => {
             <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
                 Dashboard
             </ResponsiveNavLink>
-            <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                Dashboard
+            <ResponsiveNavLink :href="route('profile.edit')" :active="route().current('profile.edit')">
+                Profile
             </ResponsiveNavLink>
         </div>
     </div>
