@@ -14,10 +14,10 @@ watch(showingNavigationDropdown, (value) => {
 <template>
     <div class="flex justify-between h-16 bg-white border-b px-4 items-center">
         <div>
-            <div class="-mr-2 flex items-center sm:hidden">
+            <div class="-mr-2 flex items-center">
                 <button
                     @click="showingNavigationDropdown = !showingNavigationDropdown"
-                    class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400 transition duration-150 ease-in-out"
+                    class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400 transition duration-150 ease-in-out md:hidden"
                 >
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                         <path
@@ -42,7 +42,12 @@ watch(showingNavigationDropdown, (value) => {
                         />
                     </svg>
                 </button>
+
+                <header class="block sm:flex items-center">
+                    <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100 ml-2">Profile Information</h2>
+                </header>
             </div>
+
         </div>
 
         <div>
@@ -89,7 +94,7 @@ watch(showingNavigationDropdown, (value) => {
     <!--Responsive Navigation Menu-->
     <div
         :class="{ block: showingNavigationDropdown, hidden: !showingNavigationDropdown }"
-        class="sm:hidden bg-white fixed mt-16 border-b w-full shadow"
+        class="md:hidden bg-white fixed mt-16 border-b w-full shadow"
     >
         <div class="pt-2 pb-3 space-y-1">
             <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">

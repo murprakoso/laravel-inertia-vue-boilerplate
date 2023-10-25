@@ -8,7 +8,7 @@ import {Link} from "@inertiajs/vue3";
     <aside
         class="z-20 flex-shrink-0 w-64 overflow-y-auto bg-white dark:bg-gray-800 md:block min-h-screen border-r border-gray-200 dark:border-gray-700 hidden">
         <div class="h-16 bg-gray-300 flex items-center justify-center">
-            <!--                Sidebar-->
+            <!--Sidebar-->
             <Link :href="route('dashboard')">
                 <ApplicationLogo
                     class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200"
