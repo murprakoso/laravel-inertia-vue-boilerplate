@@ -2,7 +2,7 @@
 import ApplicationLogo from "@/Components/ApplicationLogo.vue";
 import {Link} from "@inertiajs/vue3";
 import SideLink from "@/Components/SideLink.vue";
-import {HomeIcon, UserIcon, AdjustmentsHorizontalIcon} from '@heroicons/vue/24/outline'
+import {HomeIcon, UserIcon, UsersIcon, AdjustmentsHorizontalIcon} from '@heroicons/vue/24/outline'
 </script>
 <template>
     <aside
@@ -21,6 +21,10 @@ import {HomeIcon, UserIcon, AdjustmentsHorizontalIcon} from '@heroicons/vue/24/o
                 <SideLink :href="route('dashboard')" :active="route().current('dashboard')">
                     <HomeIcon class="h-6 w-6"/>
                     <span class="ml-2 text-sm font-medium">Dasboard</span>
+                </SideLink>
+                <SideLink :href="route('users.index')" :active="route().current('users.*')">
+                    <UsersIcon class="h-6 w-6"/>
+                    <span class="ml-2 text-sm font-medium">Users</span>
                 </SideLink>
                 <SideLink :href="route('profile.edit')" :active="route().current('profile.edit')">
                     <UserIcon class="h-6 w-6"/>
