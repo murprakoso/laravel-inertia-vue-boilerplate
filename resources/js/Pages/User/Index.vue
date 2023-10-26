@@ -1,18 +1,20 @@
 <script setup>
 import {Head, Link} from '@inertiajs/vue3';
 import DefaultLayout from "@/Layouts/DefaultLayout.vue";
-import Table from "@/Components/Table.vue";
-import PrimaryButton from "@/Components/PrimaryButton.vue";
 import Pagination from "@/Components/Pagination.vue";
+import InputSearch from "@/Components/InputSearch.vue";
+import AlertStatus from "@/Components/AlertStatus.vue";
+import Table from "@/Pages/User/Component/Table.vue";
+import {Button} from 'ant-design-vue';
+import AntTable from "@/Pages/User/Component/AntTable.vue";
 
 const props = defineProps({
-    title: {
+    status: {
         type: String,
-        required: true,
     },
-    // active: {
-    //     type: Boolean,
-    // },
+    users: {
+        type: Array,
+    },
 });
 
 const title = 'Users'
@@ -28,9 +30,11 @@ const title = 'Users'
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+
+                <AlertStatus :status="status"/>
+
                 <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="text-gray-900 dark:text-gray-100">
-
                         <div class="rounded-t mb-0 py-3 px-5 border-0">
                             <div class="flex flex-wrap items-center">
                                 <div class="relative w-full max-w-full flex-grow flex-1">
@@ -43,17 +47,22 @@ const title = 'Users'
                                           class="inline-flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150">
                                         Create
                                     </Link>
-                                    <!--                                    <button-->
-                                    <!--                                        class="bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"-->
-                                    <!--                                        type="button">See all-->
-                                    <!--                                    </button>-->
                                 </div>
                             </div>
                         </div>
 
-                        <Table/>
+                        <div class="px-5 pb-3 w-2/4">
+                            <InputSearch/>
+                        </div>
 
-                        <Pagination/>
+
+                        <!--                        <Table :users="users"/>-->
+                        <!--                        <Table :headers="['name','email']" :users="users" :index-number="true" :actions="[-->
+                        <!--                              { type: 'edit', label: 'Edit', icon: 'edit' },-->
+                        <!--                              { type: 'delete', label: 'Hapus', icon: 'delete' },-->
+                        <!--                            ]"/>-->
+
+                        <!--                        <Pagination/>-->
 
                     </div>
                 </div>

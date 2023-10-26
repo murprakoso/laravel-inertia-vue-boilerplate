@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
 
 class UserController extends Controller
@@ -13,7 +16,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        return Inertia::render('User/Index');
+        return Inertia::render('User/Index', [
+            'users' => User::all(),
+            'status' => session('status'),
+        ]);
     }
 
     /**
@@ -21,16 +27,38 @@ class UserController extends Controller
      */
     public function create()
     {
-        return Inertia::render('User/Create');
+        return Inertia::render('User/Create', [
+            'status' => session('status'),
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
-        dd($request->all());
-        //
+        $validator = Validator::make($request->all(), $request->rules());
+        if ($validator->fails()) {
+            return response()->json($validator->messages(), 422);
+        }
+
+        try {
+            DB::transaction(function () use ($request) {
+                User::create([
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'password' => bcrypt($request->password),
+                ]);
+            });
+
+            session()->flash('status', ['type' => 'success', 'message' => 'Data berhasil ditambahkan.']);
+
+            return redirect()->route('users.index');
+        } catch (\Throwable $th) {
+            session()->flash('status', ['type' => 'error', 'message' => 'Terjadi kesalahan saat menambah users. ' . $th->getMessage()]);
+            return redirect()->back()->withInput($request->all());
+//            return redirect()->route('users.index');
+        }
     }
 
     /**
