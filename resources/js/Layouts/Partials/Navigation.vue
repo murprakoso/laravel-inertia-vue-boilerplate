@@ -44,9 +44,9 @@ watch(showingNavigationDropdown, (value) => {
                 </button>
 
                 <header class="block sm:flex items-center" v-if="$slots.header">
-                    <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100 ml-2">
+                    <span class="text-lg font-medium text-gray-900 dark:text-gray-100 ml-2">
                         <slot name="header"/>
-                    </h2>
+                    </span>
                 </header>
             </div>
 

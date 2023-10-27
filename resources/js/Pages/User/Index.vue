@@ -5,8 +5,6 @@ import Pagination from "@/Components/Pagination.vue";
 import InputSearch from "@/Components/InputSearch.vue";
 import AlertStatus from "@/Components/AlertStatus.vue";
 import Table from "@/Pages/User/Component/Table.vue";
-import {Button} from 'ant-design-vue';
-import AntTable from "@/Pages/User/Component/AntTable.vue";
 
 const props = defineProps({
     status: {
@@ -17,6 +15,7 @@ const props = defineProps({
     },
 });
 
+console.log('props', props.users)
 const title = 'Users'
 </script>
 
@@ -55,14 +54,9 @@ const title = 'Users'
                             <InputSearch/>
                         </div>
 
+                        <Table :headers="['name','email']" :users="users.data" :index-number="true"/>
 
-                        <!--                        <Table :users="users"/>-->
-                        <!--                        <Table :headers="['name','email']" :users="users" :index-number="true" :actions="[-->
-                        <!--                              { type: 'edit', label: 'Edit', icon: 'edit' },-->
-                        <!--                              { type: 'delete', label: 'Hapus', icon: 'delete' },-->
-                        <!--                            ]"/>-->
-
-                        <!--                        <Pagination/>-->
+                        <Pagination/>
 
                     </div>
                 </div>

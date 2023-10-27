@@ -11,13 +11,25 @@ use Inertia\Inertia;
 
 class UserController extends Controller
 {
+    private $perPage = 10;
+
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+//        $users = User::query();
+//        if ($request->get('keyword')) {
+//            $users->search($request->get('keyword'));
+//        }
+
+        $users = $request->get('keyword')
+            ? User::search($request->get('keyword'))->paginate(10)
+            : User::paginate(10);
+
         return Inertia::render('User/Index', [
-            'users' => User::all(),
+            'users' => $users,
+//            'users' => User::all(),
             'status' => session('status'),
         ]);
     }
@@ -74,15 +86,40 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        //
+        return Inertia::render('User/Edit', [
+            'status' => session('status'),
+            'user' => $user,
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update(UserRequest $request, User $user)
     {
-        //
+        $validator = Validator::make($request->all(), $request->rules());
+        if ($validator->fails()) {
+//            return response()->json($validator->messages(), 422);
+            return redirect()->back()->withInput($request->all())->withErrors($validator);
+        }
+
+        try {
+            DB::transaction(function () use ($request, $user) {
+                $user->update([
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'password' => bcrypt($request->password),
+                ]);
+            });
+
+            session()->flash('status', ['type' => 'success', 'message' => 'Data berhasil diperbarui.']);
+
+            return redirect()->route('users.index');
+        } catch (\Throwable $th) {
+            session()->flash('status', ['type' => 'error', 'message' => 'Terjadi kesalahan saat memperbarui users. ' . $th->getMessage()]);
+            return redirect()->back()->withInput($request->all());
+//            return redirect()->route('users.index');
+        }
     }
 
     /**

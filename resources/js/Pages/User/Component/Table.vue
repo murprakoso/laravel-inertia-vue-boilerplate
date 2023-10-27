@@ -1,4 +1,5 @@
 <script setup>
+import {router, Link} from "@inertiajs/vue3";
 
 const props = defineProps({
     users: {
@@ -21,8 +22,9 @@ const props = defineProps({
 
 const handleActionClick = (action, row) => {
     if (action === 'edit') {
-        console.log(`Edit data:`, row);
-        // console.log(`Edit data:`);
+        console.log(`Edit data:`, row.id);
+        // router.get(route('users.edit', row.id))
+        // router.get(route('users.edit', {id: row.id}));
     } else if (action === 'delete') {
         // console.log(`Hapus data dengan ID:`);
         console.log(`Hapus data:`, row);
@@ -44,8 +46,7 @@ const handleActionClick = (action, row) => {
                     class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
                     {{ header }}
                 </th>
-                <th v-if="actions"
-                    class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                <th class="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
                     Action
                 </th>
             </tr>
@@ -61,9 +62,14 @@ const handleActionClick = (action, row) => {
                     class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left text-blueGray-700 ">
                     {{ item[header.toLowerCase()] }}
                 </th>
-                <th>
-                    <button v-for="action in actions" :key="action.type" @click="handleActionClick(action.type, item)">
-                        {{ action.label }}
+                <th class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left text-blueGray-700 gap-2 flex">
+                    <Link :href="route('users.edit', {user: item})"
+                          class="bg-indigo-50 p-2 rounded">
+                        Edit
+                    </Link>
+                    <button @click="handleActionClick"
+                            class="bg-indigo-50 p-2 rounded">
+                        Delete
                     </button>
                 </th>
             </tr>

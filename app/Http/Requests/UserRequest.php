@@ -21,10 +21,21 @@ class UserRequest extends FormRequest
      */
     public function rules(): array
     {
+        $user = $this->route('user');
+
+        $name = 'required|string|max:30';
+        if ($this->method() == 'PUT') {
+            $email = 'required|string|email|max:255|unique:users,email,' . $user->id;
+            $password = 'confirmed';
+        } else {
+            $email = 'required|string|email|max:255|unique:users';
+            $password = 'required|min:6|confirmed';
+        }
+
         return [
-            'name' => 'required|string|max:30',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|min:6|confirmed'
+            'name' => $name,
+            'email' => $email,
+            'password' => $password
         ];
     }
 }
