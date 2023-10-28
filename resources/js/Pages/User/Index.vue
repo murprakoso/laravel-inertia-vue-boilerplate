@@ -11,11 +11,10 @@ const props = defineProps({
         type: String,
     },
     users: {
-        type: Array,
+        type: Object,
     },
 });
 
-console.log('props', props.users)
 const title = 'Users'
 </script>
 
@@ -56,7 +55,7 @@ const title = 'Users'
 
                         <Table :headers="['name','email']" :users="users.data" :index-number="true"/>
 
-                        <Pagination/>
+                        <Pagination :pagination="users"/>
 
                     </div>
                 </div>

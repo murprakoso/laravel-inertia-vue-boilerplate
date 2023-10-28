@@ -11,7 +11,7 @@ use Inertia\Inertia;
 
 class UserController extends Controller
 {
-    private $perPage = 10;
+    private $perPage = 5;
 
     /**
      * Display a listing of the resource.
@@ -24,8 +24,8 @@ class UserController extends Controller
 //        }
 
         $users = $request->get('keyword')
-            ? User::search($request->get('keyword'))->paginate(10)
-            : User::paginate(10);
+            ? User::latest()->search($request->get('keyword'))->paginate(10)
+            : User::latest()->paginate(5);
 
         return Inertia::render('User/Index', [
             'users' => $users,

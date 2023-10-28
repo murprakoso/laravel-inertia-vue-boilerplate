@@ -43,7 +43,6 @@ const handleFormSubmit = (event) => {
         },
     });
 }
-console.log(usePage().props)
 </script>
 
 <template>
@@ -77,7 +76,7 @@ console.log(usePage().props)
                             <form @submit.prevent="handleFormSubmit" class="space-y-6">
 
                                 <div>
-                                    <InputLabel for="name" value="Name"/>
+                                    <InputLabel for="name" value="Name*"/>
                                     <TextInput
                                         id="name"
                                         type="text"
@@ -90,7 +89,7 @@ console.log(usePage().props)
                                 </div>
 
                                 <div>
-                                    <InputLabel for="email" value="Email"/>
+                                    <InputLabel for="email" value="Email*"/>
                                     <TextInput
                                         id="email"
                                         type="email"
