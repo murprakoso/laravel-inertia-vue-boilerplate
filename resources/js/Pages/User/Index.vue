@@ -1,11 +1,13 @@
 <script setup>
-import {Head, Link} from '@inertiajs/vue3';
+import {Head, Link, useForm} from '@inertiajs/vue3';
 import DefaultLayout from "@/Layouts/DefaultLayout.vue";
 import Pagination from "@/Components/Pagination.vue";
 import InputSearch from "@/Components/InputSearch.vue";
 import AlertStatus from "@/Components/AlertStatus.vue";
 import Table from "@/Pages/User/Component/Table.vue";
+import {ref} from "vue";
 
+const title = 'Users'
 const props = defineProps({
     status: {
         type: String,
@@ -14,8 +16,20 @@ const props = defineProps({
         type: Object,
     },
 });
+// const searchInput = ref(null)
 
-const title = 'Users'
+/**
+ * Search
+ */
+const form = useForm({
+    search: '',
+});
+const handleSearch = (event) => {
+    form.get(route('users.index'), {
+        preserveScroll: true,
+        onSuccess: () => form.search
+    });
+}
 </script>
 
 <template>
@@ -50,7 +64,11 @@ const title = 'Users'
                         </div>
 
                         <div class="px-5 pb-3 w-2/4">
-                            <InputSearch/>
+                            <form @submit.prevent="handleSearch">
+                                <InputSearch id="search"
+                                             v-model="form.search"
+                                />
+                            </form>
                         </div>
 
                         <Table :headers="['name','email']" :users="users.data" :index-number="true"/>

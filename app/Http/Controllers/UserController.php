@@ -18,18 +18,14 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-//        $users = User::query();
-//        if ($request->get('keyword')) {
-//            $users->search($request->get('keyword'));
-//        }
+        $users = $request->get('search')
+            ? User::latest()->search($request->get('search'))->paginate($this->perPage)
+            : User::latest()->paginate($this->perPage);
 
-        $users = $request->get('keyword')
-            ? User::latest()->search($request->get('keyword'))->paginate(10)
-            : User::latest()->paginate(5);
+        $users->appends(['search' => $request->get('search')]);
 
         return Inertia::render('User/Index', [
             'users' => $users,
-//            'users' => User::all(),
             'status' => session('status'),
         ]);
     }
