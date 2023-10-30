@@ -6,6 +6,9 @@ import InputSearch from "@/Components/InputSearch.vue";
 import AlertStatus from "@/Components/AlertStatus.vue";
 import Table from "@/Pages/User/Component/Table.vue";
 import {ref} from "vue";
+import SecondaryButton from "@/Components/SecondaryButton.vue";
+import DangerButton from "@/Components/DangerButton.vue";
+import ModalDelete from "@/Components/ModalDelete.vue";
 
 const title = 'Users'
 const props = defineProps({

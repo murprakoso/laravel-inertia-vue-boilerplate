@@ -123,6 +123,17 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        try {
+            DB::transaction(function () use ($user) {
+                $user->delete();
+            });
+
+            session()->flash('status', ['type' => 'success', 'message' => 'Data berhasil dihapus.']);
+
+            return redirect()->back();
+        } catch (\Throwable $th) {
+            session()->flash('status', ['type' => 'error', 'message' => 'Terjadi kesalahan saat menghapus users. ' . $th->getMessage()]);
+            return redirect()->back();
+        }
     }
 }
