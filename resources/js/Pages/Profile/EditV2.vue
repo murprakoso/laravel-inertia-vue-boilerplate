@@ -5,7 +5,6 @@ import UpdatePasswordForm from './Partials/UpdatePasswordForm.vue';
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm.vue';
 import {Head, usePage} from '@inertiajs/vue3';
 import DefaultLayout from "@/Layouts/DefaultLayout.vue";
-import DashboardLayout from "@/Layouts/DashboardLayout.vue";
 
 defineProps({
     mustVerifyEmail: {
@@ -20,7 +19,7 @@ defineProps({
 <template>
     <Head title="Profile"/>
 
-    <DashboardLayout>
+    <DefaultLayout>
         <template #header>
             Profile
         </template>
@@ -44,5 +43,5 @@ defineProps({
                 </div>
             </div>
         </div>
-    </DashboardLayout>
+    </DefaultLayout>
 </template>

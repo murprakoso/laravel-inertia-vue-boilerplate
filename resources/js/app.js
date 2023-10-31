@@ -1,5 +1,6 @@
 import './bootstrap';
 import '../css/tailwind.css';
+import '../css/app.css';
 import 'ant-design-vue/dist/reset.css';
 
 import {createApp, h} from 'vue';

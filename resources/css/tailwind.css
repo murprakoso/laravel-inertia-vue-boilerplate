@@ -1,3 +1,39 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/** {*/
+/*    border: 1px solid #6b7280;*/
+/*}*/
+
+/*.ant-layout-sider-children {*/
+/*    @apply bg-white;*/
+/*}*/
+
+.ant-layout-sider.not-collapsed,
+.ant-layout-sider-trigger {
+    flex-basis: 240px !important;
+    max-width: 240px !important;
+    min-width: 240px !important;
+    width: 240px !important;
+}
+
+.ant-layout-sider.ant-layout-sider-collapsed,
+.ant-layout-sider.ant-layout-sider-collapsed > .ant-layout-sider-trigger {
+    flex-basis: 65px !important;
+    max-width: 65px !important;
+    min-width: 65px !important;
+    width: 65px !important;
+}
+
+.ant-menu-title-content {
+    @apply flex items-center;
+}
+
+#app > section > section > header {
+    @apply bg-white p-0;
+}
+
+/*.ant-layout-header {*/
+/*    @apply bg-white p-0;*/
+/*}*/
