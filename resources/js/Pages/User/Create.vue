@@ -1,6 +1,6 @@
 <script setup>
 import {Head, Link, useForm} from '@inertiajs/vue3';
-import DefaultLayout from "@/Layouts/DefaultLayoutV2.vue";
+import DefaultLayout from "@/Layouts/DefaultLayout.vue";
 import {ArrowSmallLeftIcon} from '@heroicons/vue/24/outline'
 import TextInput from "@/Components/TextInput.vue";
 import InputLabel from "@/Components/InputLabel.vue";

@@ -11,16 +11,17 @@ use Inertia\Inertia;
 
 class UserController extends Controller
 {
-    private $perPage = 5;
+    private $perPage = 10;
 
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
+        $limit = $request->get('results') ? $request->get('results') : $this->perPage;
         $users = $request->get('search')
-            ? User::latest()->search($request->get('search'))->paginate($this->perPage)
-            : User::latest()->paginate($this->perPage);
+            ? User::latest()->search($request->get('search'))->paginate($limit)
+            : User::latest()->paginate($limit);
 
         $users->appends(['search' => $request->get('search')]);
 
@@ -28,6 +29,12 @@ class UserController extends Controller
             'users' => $users,
             'status' => session('status'),
         ]);
+    }
+
+    public function table()
+    {
+        $users = User::paginate(10);
+        return response()->json($users);
     }
 
     /**

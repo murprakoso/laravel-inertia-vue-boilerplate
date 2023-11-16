@@ -31,6 +31,7 @@ Route::get('/dashboard', function () {
 
 Route::middleware('auth')->group(function () {
     Route::resource('users', \App\Http\Controllers\UserController::class);
+    Route::get('/users/table', [\App\Http\Controllers\UserController::class, 'table'])->name('users.table');
 
     Route::get('/test', function () {
         return Inertia::render('DashboardLayout');
