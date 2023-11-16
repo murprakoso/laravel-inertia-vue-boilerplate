@@ -1,9 +1,10 @@
 <script setup>
-import {Head, Link, router, useForm} from '@inertiajs/vue3';
+import {Head, Link, router, useForm, usePage} from '@inertiajs/vue3';
 import DashboardLayout from "@/Layouts/DefaultLayout.vue";
-import {ref, h} from 'vue';
+import {ref, h, watch} from 'vue';
 import {notification} from 'ant-design-vue';
 import {EditOutlined, DeleteOutlined, ReloadOutlined} from "@ant-design/icons-vue";
+import {debounce} from "lodash/function.js";
 
 
 const title = 'Users';
@@ -18,17 +19,13 @@ const props = defineProps({
 });
 
 /**
- * Ref
+ * Ref / Reactive / State
  */
 const loading = false
 const current = ref(props.users?.current_page);
 const pageSize = ref(props.users?.per_page);
 const total = ref(props.users?.total)
-
-const form = useForm({
-  search: '',
-});
-
+const searchInput = ref(usePage().props.ziggy?.query?.search || '')
 
 /**
  * Handle Table
@@ -66,14 +63,46 @@ const columns = [
   }
 ]
 
+/**
+ * Handle Paginattion
+ * @param page
+ * @param pageSize
+ */
 const handlePagination = (page, pageSize) => {
-  router.get(route('users.index', {page: page, results: pageSize}))
+  console.log(searchInput.value)
+  const params = (searchInput.value) ? {
+    page: page,
+    results: pageSize,
+    search: searchInput.value
+  } : {
+    page: page,
+    results: pageSize,
+  }
+  router.get(route('users.index', params));
 }
+// const handlePagination = async (page, pageSize) => {
+//   // Fetch data for the selected page using Inertia's visit method
+//   await router.visit(route('users.index', {page: page, results: pageSize, search: searchInput.value}));
+//   current.value = page;
+//   pageSize.value = pageSize;
+// }
 
-const handleSearch = (e) => {
-  console.log('search: ', e)
-};
+/**
+ * Handle Search
+ * @type {(function(): (*))|*}
+ */
+const handleSearch = debounce(() => {
+  const searchValue = searchInput.value;
+  router.get(route('users.index', {search: searchValue}), {
+    // preserveState: true,
+    // preserveScroll: false,
+  });
+}, 700);
 
+/**
+ * Handle Deelete
+ * @param id
+ */
 const handleDelete = (id) => {
   router.delete(route('users.destroy', id))
   console.log('delete: ', props.status)
@@ -102,12 +131,12 @@ const handleDelete = (id) => {
         <a-col :span="12">
           <a-space>
             <a-input
-                v-model:value.lazy="form.search"
-                @input="handleSearch"
+                v-model:value="searchInput"
+                @change="handleSearch"
                 placeholder="Search..."
             >
             </a-input>
-            <a-button type="primary">
+            <a-button type="primary" @click="$inertia.reload()">
               <ReloadOutlined/>
             </a-button>
           </a-space>

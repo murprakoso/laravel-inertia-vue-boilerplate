@@ -26,7 +26,7 @@ class UserController extends Controller
         $users->appends(['search' => $request->get('search')]);
 
         return Inertia::render('User/Index', [
-            'users' => $users,
+            'users' => $users->withQueryString(),
             'status' => session('status'),
         ]);
     }

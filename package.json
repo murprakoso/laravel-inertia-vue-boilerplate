@@ -23,6 +23,7 @@
         "@ant-design/icons-vue": "^7.0.1",
         "@heroicons/vue": "^2.0.18",
         "ant-design-vue": "4.x",
+        "lodash": "^4.17.21",
         "vue-request": "^2.0.4"
     }
 }
