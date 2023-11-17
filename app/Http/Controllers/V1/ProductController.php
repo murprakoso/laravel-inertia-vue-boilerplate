@@ -16,52 +16,36 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        $limit = $request->get('results') ? $request->get('results') : $this->perPage;
-        $products = $request->get('search')
-            ? Product::latest()->search($request->get('search'))->paginate($limit)
-            : Product::latest()->paginate($limit);
-
-        $products->appends(['search' => $request->get('search')]);
-//        dd($products);
         return Inertia::render('Product/ProductIndex/ProductIndex', [
-            'products' => $products->withQueryString(),
             'status' => session('status'),
         ]);
-
-//        return Inertia::render('Product/ProductIndex/ProductIndex',
-//            [
-//                'products' => [
-//                    [
-//                        'id' => 1,
-//                        'name' => 'Product 1',
-//                        'price' => 100,
-//                        'quantity' => 10,
-//                    ],
-//                    [
-//                        'id' => 2,
-//                        'name' => 'Product 2',
-//                        'price' => 200,
-//                        'quantity' => 20,
-//                    ],
-//                    [
-//                        'id' => 3,
-//                        'name' => 'Product 3',
-//                        'price' => 300,
-//                        'quantity' => 30,
-//                    ],
-//                ]
-//            ]
-//        );
     }
 
     public function indexAjax(Request $request)
     {
         $limit = $request->get('results') ? $request->get('results') : $this->perPage;
-        $products = $request->get('search')
-            ? Product::latest()->search($request->get('search'))->paginate($limit)
-            : Product::latest()->paginate($limit);
 
-        $products->appends(['search' => $request->get('search')]);
+        $query = $request->get('search')
+            ? Product::latest()->search($request->get('search'))
+            : Product::latest();
+
+        // Sorting
+        if ($request->has('sortField') && $request->has('sortOrder')) {
+            $sortField = $request->get('sortField');
+            $sortOrder = $request->get('sortOrder');
+//            $sortOrder = $request->get('sortOrder') === 'ascend' ? 'asc' : 'desc';
+
+            $query->orderBy($sortField, $sortOrder);
+        }
+
+        $products = $query->paginate($limit);
+
+        $products->appends([
+            'search' => $request->get('search'),
+            'sortField' => $request->get('sortField'),
+            'sortOrder' => $request->get('sortOrder'),
+            'results' => $limit,
+        ]);
 
         return response()->json($products);
     }

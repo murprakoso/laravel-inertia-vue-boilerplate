@@ -7,6 +7,7 @@ import {createApp, h} from 'vue';
 import {createInertiaApp, router} from '@inertiajs/vue3';
 import {resolvePageComponent} from 'laravel-vite-plugin/inertia-helpers';
 import {ZiggyVue} from '../../vendor/tightenco/ziggy/dist/vue.m';
+import {VueQueryPlugin} from "vue-query";
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
@@ -22,7 +23,8 @@ createInertiaApp({
         const VueApp = createApp({render: () => h(App, props)});
 
         // VueApp.config.globalProperties.$date = dayjs;
-        VueApp.config.globalProperties.$route = route
+        VueApp.config.globalProperties.$route = route;
+        VueApp.use(VueQueryPlugin);
 
         VueApp.use(plugin)
             .use(ZiggyVue, Ziggy)
