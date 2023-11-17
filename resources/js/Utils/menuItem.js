@@ -1,4 +1,4 @@
-import {HomeOutlined, SettingOutlined, UserOutlined} from '@ant-design/icons-vue';
+import {FileTextOutlined, HomeOutlined, SettingOutlined, UserOutlined} from '@ant-design/icons-vue';
 import {h} from 'vue';
 
 export const items = [
@@ -7,6 +7,12 @@ export const items = [
         icon: () => h(HomeOutlined),
         label: 'Dashboard',
         title: 'Dashboard',
+    },
+    {
+        key: 'products',
+        icon: () => h(FileTextOutlined),
+        label: 'Products',
+        title: 'Products',
     },
     {
         key: 'users',

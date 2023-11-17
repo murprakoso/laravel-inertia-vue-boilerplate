@@ -33,6 +33,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('users', \App\Http\Controllers\UserController::class);
     Route::get('/users/table', [\App\Http\Controllers\UserController::class, 'table'])->name('users.table');
 
+    Route::resource('products', \App\Http\Controllers\V1\ProductController::class);
+
     Route::get('/test', function () {
         return Inertia::render('DashboardLayout');
     })->name('test');
