@@ -1,52 +1,88 @@
-import {usePage} from '@inertiajs/vue3';
-import {ref} from "vue";
+import {reactive, watch} from 'vue';
+import axios from 'axios';
+import {debounce} from "lodash";
+import {useQuery} from 'vue-query';
 
 export default function useProductIndexController() {
-    // const router = useRouter();
-    const page = usePage();
-
-    const loading = ref(false);
-    const search = ref(page.props.ziggy?.query?.search || '');
+    const queryParams = reactive({
+        page: 1,
+        results: 10,
+        search: '',
+        sortField: 'created_at',
+        sortOrder: 'DESC',
+    });
 
     /**
      * Handle Table Change
      */
-    const handleTableChange = (pagination, filters, sorter) => {
-        console.log('handle table change: ', pagination, filters, sorter);
-    }
+    const handleTableChange = (newPagination, filter, sorter) => {
+        queryParams.page = newPagination.current;
+        queryParams.results = newPagination.pageSize;
+        queryParams.sortField = sorter.field;
+        queryParams.sortOrder = sorter.order === 'ascend' ? 'ASC' : 'DESC';
+        console.log('sorter', sorter)
+    };
 
     /**
      * Handle Search
      */
-    const handleSearch = (value) => {
-        console.log('handle search: ', value);
-    }
+    const handleSearch = debounce((value) => {
+        queryParams.page = 1;
+        queryParams.search = value.target._value;
+        console.log('queryParams', queryParams)
+    }, 500);
 
     /**
-     * Handle Table Filter
+     * Handle Delete
      */
     const handleDelete = (id) => {
         console.log('handle delete: ', id);
     }
 
     /**
-     * Handle Table
+     * Fetch Data
+     */
+    const {
+        data: productData,
+        refetch: productDataRefetch,
+        isFetching: productDataIsFetching,
+    } = useQuery(['products', queryParams], async () => {
+        const res = await axios.get('api/products', {
+            params: queryParams
+        });
+        return res.data;
+    });
+
+    watch(queryParams, () => {
+        return productDataRefetch;
+    })
+
+    /**
+     * Handle Table Props
      */
     const ProductTableProps = [
         {
             title: 'Name',
             dataIndex: 'name',
+            key: 'name',
             sorter: true,
-            width: '20%',
-        }
+            width: '50%',
+        },
+        {
+            title: 'Price',
+            dataIndex: 'price',
+            key: 'price',
+            sorter: true,
+            width: '50%',
+        },
     ];
 
     return {
-        loading,
-        search,
-        handleSearch,
+        productData,
+        productDataRefetch,
+        productDataIsFetching,
         handleTableChange,
-        handleDelete,
-        ProductTableProps
+        handleSearch,
+        ProductTableProps,
     }
 }

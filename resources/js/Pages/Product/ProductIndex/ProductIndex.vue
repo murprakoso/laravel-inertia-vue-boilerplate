@@ -1,60 +1,17 @@
 <script setup>
-import {reactive, watch} from 'vue';
-import axios from 'axios';
 import DefaultLayout from "@/Layouts/DefaultLayout.vue";
 import {ReloadOutlined} from "@ant-design/icons-vue";
-import {debounce} from "lodash";
-import {useQuery} from 'vue-query';
+import useProductIndexController from "@/Pages/Product/ProductIndex/ProductIndexController.js";
 
-const queryParams = reactive({
-  page: 1,
-  results: 10,
-  search: '',
-  // sortField: 'name',
-  // sortOrder: 'DESC',
-});
+const {
+  productData,
+  productDataRefetch,
+  productDataIsFetching,
+  handleTableChange,
+  handleSearch,
+  ProductTableProps,
+} = useProductIndexController()
 
-const handleTableChange = (newPagination, filter, sorter) => {
-  queryParams.page = newPagination.current;
-  queryParams.results = newPagination.pageSize;
-  queryParams.sortField = sorter.field;
-  queryParams.sortOrder = sorter.order === 'ascend' ? 'ASC' : 'DESC';
-  console.log('sorter', sorter)
-};
-
-const handleSearch = debounce((value) => {
-  queryParams.page = 1;
-  queryParams.search = value.target._value;
-  console.log('queryParams', queryParams)
-}, 500);
-
-const {data: dataSource, refetch, isFetching} = useQuery(['products', queryParams], async () => {
-  const res = await axios.get('api/products', {
-    params: queryParams
-  });
-  return res.data;
-});
-
-watch(queryParams, () => {
-  return refetch
-})
-
-const columns = [
-  {
-    title: 'Name',
-    dataIndex: 'name',
-    key: 'name',
-    sorter: true,
-    width: '50%',
-  },
-  {
-    title: 'Price',
-    dataIndex: 'price',
-    key: 'price',
-    sorter: true,
-    width: '50%',
-  },
-];
 </script>
 
 <template>
@@ -69,8 +26,8 @@ const columns = [
             >
             </a-input>
           </a-space>
-          <a-button type="primary" class="ml-2" @click="refetch">
-            <ReloadOutlined :spin="isFetching"/>
+          <a-button type="primary" class="ml-2" @click="productDataRefetch">
+            <ReloadOutlined :spin="productDataIsFetching"/>
           </a-button>
         </a-col>
         <a-col :span="12" class="text-right">
@@ -81,12 +38,12 @@ const columns = [
       <a-table
           size="small"
           bordered
-          :columns="columns"
-          :data-source="dataSource?.data"
+          :columns="ProductTableProps"
+          :data-source="productData?.data"
           :pagination="{
-            total: dataSource?.total,
+            total: productData?.total,
           }"
-          :loading="isFetching"
+          :loading="productDataIsFetching"
           @change="handleTableChange"
       >
         <template #bodyCell="{text, record, index, column}">
