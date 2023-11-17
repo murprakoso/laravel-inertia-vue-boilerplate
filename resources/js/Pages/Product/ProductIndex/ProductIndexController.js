@@ -18,7 +18,7 @@ export default function useProductIndexController() {
     const handleTableChange = (newPagination, filter, sorter) => {
         queryParams.page = newPagination.current;
         queryParams.results = newPagination.pageSize;
-        queryParams.sortField = sorter.field;
+        queryParams.sortField = sorter.field === 'no' ? 'id' : sorter.field;
         queryParams.sortOrder = sorter.order === 'ascend' ? 'ASC' : 'DESC';
         console.log('sorter', sorter)
     };
@@ -62,6 +62,14 @@ export default function useProductIndexController() {
      */
     const ProductTableProps = [
         {
+            title: 'No',
+            dataIndex: 'no',
+            key: 'no',
+            sorter: true,
+            width: '5%',
+            align: 'center',
+        },
+        {
             title: 'Name',
             dataIndex: 'name',
             key: 'name',
@@ -73,8 +81,16 @@ export default function useProductIndexController() {
             dataIndex: 'price',
             key: 'price',
             sorter: true,
-            width: '50%',
+            width: '30%',
         },
+        {
+            title: 'Actions',
+            dataIndex: 'actions',
+            key: 'actions',
+            align: 'center',
+            fixed: 'right',
+            width: '10%',
+        }
     ];
 
     return {
@@ -83,6 +99,7 @@ export default function useProductIndexController() {
         productDataIsFetching,
         handleTableChange,
         handleSearch,
+        handleDelete,
         ProductTableProps,
     }
 }

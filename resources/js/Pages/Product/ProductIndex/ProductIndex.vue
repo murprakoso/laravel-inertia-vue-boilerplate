@@ -1,7 +1,9 @@
 <script setup>
 import DefaultLayout from "@/Layouts/DefaultLayout.vue";
-import {ReloadOutlined} from "@ant-design/icons-vue";
+import {DeleteOutlined, EditOutlined, ReloadOutlined} from "@ant-design/icons-vue";
 import useProductIndexController from "@/Pages/Product/ProductIndex/ProductIndexController.js";
+import {Head, Link} from "@inertiajs/vue3";
+import {h} from "vue";
 
 const {
   productData,
@@ -9,13 +11,19 @@ const {
   productDataIsFetching,
   handleTableChange,
   handleSearch,
+  handleDelete,
   ProductTableProps,
 } = useProductIndexController()
 
+const title = 'Products';
 </script>
 
 <template>
+  <Head :title="title"/>
   <DefaultLayout>
+    <template #header>
+      {{ title }}
+    </template>
     <a-card>
       <a-row :gutter="16" class="mb-6">
         <a-col :span="12">
@@ -23,6 +31,7 @@ const {
             <a-input
                 @change="handleSearch"
                 placeholder="Search..."
+                allow-clear="true"
             >
             </a-input>
           </a-space>
@@ -38,16 +47,35 @@ const {
       <a-table
           size="small"
           bordered
+          :scroll="{ x: 1300 }"
+          :row-key="record => record.id.toString()"
           :columns="ProductTableProps"
           :data-source="productData?.data"
           :pagination="{
             total: productData?.total,
+            showTotal: total => `Total ${total} items`,
           }"
           :loading="productDataIsFetching"
           @change="handleTableChange"
       >
         <template #bodyCell="{text, record, index, column}">
+          <template v-if="column.dataIndex === 'no'">{{ productData.from + index }}</template>
           <template v-if="column.dataIndex === 'name'">{{ text }}</template>
+          <template v-if="column.dataIndex === 'actions'">
+            <Link :href="route('products.edit', record.id)">
+              <a-button type="text" :icon="h(EditOutlined)" class="mr-2">
+              </a-button>
+            </Link>
+            <a-popconfirm
+                v-if="productData.data.length"
+                placement="left"
+                title="Sure to delete?"
+                @confirm="handleDelete(record.id)"
+            >
+              <a-button type="text" :icon="h(DeleteOutlined)">
+              </a-button>
+            </a-popconfirm>
+          </template>
         </template>
       </a-table>
     </a-card>
