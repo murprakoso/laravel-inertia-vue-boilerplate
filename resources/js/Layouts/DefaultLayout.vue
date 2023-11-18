@@ -1,8 +1,13 @@
 <script setup>
 import Sidebar from "@/Layouts/Partials/Sidebar.vue";
+import {VueQueryDevTools} from "vue-query/devtools";
 </script>
 
 <template>
+  <div>
+    <VueQueryDevTools :initialIsOpen="false" position="bottom-right"/>
+  </div>
+
   <a-layout style="min-height: 100vh">
     <Sidebar/>
     <a-layout>

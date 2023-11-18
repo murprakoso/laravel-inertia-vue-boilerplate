@@ -4,8 +4,11 @@ namespace App\Http\Controllers\V1;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class ProductController extends Controller
 {
@@ -21,7 +24,7 @@ class ProductController extends Controller
         ]);
     }
 
-    public function indexAjax(Request $request)
+    public function indexAjax(Request $request): JsonResponse
     {
         $limit = $request->get('results') ? $request->get('results') : $this->perPage;
 
@@ -53,17 +56,31 @@ class ProductController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): Response
     {
-        //
+        return Inertia::render('Product/ProductForm/ProductForm', [
+            'status' => session('status'),
+            'formMode' => 'CREATE'
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
-        //
+        $request->validate([
+            'name' => 'required|string',
+            'price' => 'required|numeric',
+        ]);
+
+        Product::insert([
+            'name' => $request->input('name'),
+            'price' => $request->input('price')
+        ]);
+
+        session()->flash('status', ['type' => 'success', 'message' => 'Data berhasil ditambahkan.']);
+        return redirect()->route('products.index');
     }
 
     /**
@@ -77,17 +94,32 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Product $product): Response
     {
-        //
+        return Inertia::render('Product/ProductForm/ProductForm', [
+            'status' => session('status'),
+            'product' => $product,
+            'formMode' => 'EDIT'
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Product $product): RedirectResponse
     {
-        //
+        $request->validate([
+            'name' => 'required|string',
+            'price' => 'required|numeric',
+        ]);
+
+        $product->update([
+            'name' => $request->input('name'),
+            'price' => $request->input('price')
+        ]);
+
+        session()->flash('status', ['type' => 'success', 'message' => 'Data berhasil diperbarui.']);
+        return redirect()->route('products.index');
     }
 
     /**
