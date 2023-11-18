@@ -125,8 +125,19 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Product $product)
     {
-        //
+        try {
+            $product->delete();
+
+            session()->flash('status', ['type' => 'success', 'message' => 'Data berhasil dihapus.']);
+
+//            return response()->json(['message' => 'Data berhasil dihapus.']);
+//            return redirect()->route('products.index');
+            return redirect()->back();
+        } catch (\Throwable $th) {
+            session()->flash('status', ['type' => 'error', 'message' => 'Terjadi kesalahan saat menghapus users. ' . $th->getMessage()]);
+            return redirect()->back();
+        }
     }
 }

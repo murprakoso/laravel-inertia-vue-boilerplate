@@ -26,16 +26,16 @@ export default function useProductFormController(props) {
      * Handle Submit
      */
     const handleSubmit = () => {
-        console.log('formState', formState);
+        // console.log('formState', formState);
 
         if (formMode === FormMode.CREATE) {
-            console.log('create')
+            // console.log('create')
             router.post('/products', formState)
             return
         }
 
-        console.log('update')
-        console.log('update: ', props.product)
+        // console.log('update')
+        // console.log('update: ', props.product)
         router.put(`/products/${props.product.id}`, {product: props.product, ...formState})
         // router.put(route('products.update', {product: props.product}), formState)
 
