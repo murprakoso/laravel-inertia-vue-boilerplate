@@ -23,11 +23,13 @@ const {status} = usePage().props
 
 if (status) {
   console.log('status', status)
-  openNotification({
-    type: status.type,
-    message: status.type,
-    description: `${status.message}`,
-  });
+  setTimeout(() => {
+    openNotification({
+      type: status.type,
+      message: status.type,
+      description: `${status.message}`,
+    });
+  }, 1000)
 }
 </script>
 
