@@ -2,7 +2,8 @@ import {reactive, watch} from 'vue';
 import axios from 'axios';
 import {debounce} from "lodash";
 import {useQuery} from 'vue-query';
-import {router} from "@inertiajs/vue3";
+import useDeleteAxios from "@/Shared/Hooks/useDeleteAxios.js";
+import {axiosDeleteProduct} from "@/Pages/Product/ProductAxiosConfig.js";
 
 export default function useProductIndexController() {
     const queryParams = reactive({
@@ -17,7 +18,6 @@ export default function useProductIndexController() {
         queryParams.results = newPagination.pageSize;
         queryParams.sortField = sorter.field === 'no' ? 'id' : sorter.field;
         queryParams.sortOrder = sorter.order === 'ascend' ? 'ASC' : 'DESC';
-        // console.log('sorter', sorter)
     };
 
     /**
@@ -26,7 +26,6 @@ export default function useProductIndexController() {
     const handleSearch = debounce((value) => {
         queryParams.page = 1;
         queryParams.search = value.target._value;
-        // console.log('queryParams', queryParams)
     }, 500);
 
     /**
@@ -45,12 +44,20 @@ export default function useProductIndexController() {
      * Handle Delete
      * @param data | id
      */
-    const handleDelete = (data) => {
-        // console.log('handle delete: ', data);
-        router.delete(`/products/${data.id}`, {product: data})
-        // queryParams.page = 1;
-        return productDataRefetch;
-    }
+    const deleteMutation = useDeleteAxios({
+        config: (id) => axiosDeleteProduct(id),
+        invalidateQueryKey: ['products'],
+        queryParams,
+    });
+
+    const handleDelete = async (data) => {
+        try {
+            await deleteMutation.mutateAsync({id: data.id});
+        } catch (error) {
+            console.error('Error deleting product:', error);
+        }
+    };
+
 
     watch(queryParams, () => {
         return productDataRefetch;

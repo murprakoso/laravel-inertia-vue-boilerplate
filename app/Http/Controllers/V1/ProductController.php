@@ -130,14 +130,9 @@ class ProductController extends Controller
         try {
             $product->delete();
 
-            session()->flash('status', ['type' => 'success', 'message' => 'Data berhasil dihapus.']);
-
-//            return response()->json(['message' => 'Data berhasil dihapus.']);
-//            return redirect()->route('products.index');
-            return redirect()->back();
+            return response()->json(['type' => 'success', 'message' => 'Data berhasil dihapus.']);
         } catch (\Throwable $th) {
-            session()->flash('status', ['type' => 'error', 'message' => 'Terjadi kesalahan saat menghapus users. ' . $th->getMessage()]);
-            return redirect()->back();
+            return response()->json(['type' => 'error', 'message' => 'Terjadi kesalahan saat menghapus users. ' . $th->getMessage()]);
         }
     }
 }
