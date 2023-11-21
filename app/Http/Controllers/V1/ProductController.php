@@ -26,18 +26,23 @@ class ProductController extends Controller
 
     public function indexAjax(Request $request): JsonResponse
     {
-        $limit = $request->get('results') ? $request->get('results') : $this->perPage;
+        $perPage = $this->perPage;
+        $limit = $request->get('results', $perPage);
 
-        $query = $request->get('search')
-            ? Product::latest()->search($request->get('search'))
-            : Product::latest();
+        $query = Product::query();
 
-        // Sorting
-        if ($request->has('sortField') && $request->has('sortOrder')) {
+        // Apply search if 'search' parameter is present
+        $searchTerm = $request->get('search');
+        if ($searchTerm) {
+            $query->search($searchTerm);
+        }
+
+        // Always order by 'id' in descending order
+        $query->orderBy('id', 'desc');
+        // Apply sorting if 'sortField' and 'sortOrder' parameters are present
+        if ($request->has(['sortField', 'sortOrder'])) {
             $sortField = $request->get('sortField');
             $sortOrder = $request->get('sortOrder');
-//            $sortOrder = $request->get('sortOrder') === 'ascend' ? 'asc' : 'desc';
-
             $query->orderBy($sortField, $sortOrder);
         }
 

@@ -1,7 +1,7 @@
 export const axiosGetProducts = () => {
     return {
         method: 'GET',
-        url: `/products`,
+        url: `/api/products`,
     }
 }
 

@@ -3,7 +3,9 @@ import axios from 'axios';
 import {debounce} from "lodash";
 import {useQuery} from 'vue-query';
 import useDeleteAxios from "@/Shared/Hooks/useDeleteAxios.js";
-import {axiosDeleteProduct} from "@/Pages/Product/ProductAxiosConfig.js";
+import {axiosDeleteProduct, axiosGetProducts} from "@/Pages/Product/ProductAxiosConfig.js";
+import useGetAxios from "@/Shared/Hooks/useGetAxios.js";
+import {productKeys} from "@/Pages/Product/ProductKey.js";
 
 export default function useProductIndexController() {
     const queryParams = reactive({
@@ -32,13 +34,18 @@ export default function useProductIndexController() {
      * Fetch Data
      */
     const {
-        data: productData, refetch: productDataRefetch, isFetching: productDataIsFetching,
-    } = useQuery(['products', queryParams], async () => {
-        const res = await axios.get('api/products', {
-            params: queryParams
-        });
-        return res.data;
-    });
+        data: productData,
+        refetch: productDataRefetch,
+        isFetching: productDataIsFetching,
+    } = useGetAxios({
+        config: axiosGetProducts(),
+        queryParams: queryParams,
+        // queryKey: ['products', queryParams],
+        queryKey: productKeys.lists(queryParams).queryKey,
+        // invalidateQueryKey: productKeys.lists(queryParams).queryKey,
+        removeQueryKey: productKeys.lists._def,
+    })
+
 
     /**
      * Handle Delete
