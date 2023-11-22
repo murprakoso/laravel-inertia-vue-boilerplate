@@ -1,10 +1,8 @@
-import {reactive, ref, watch, defineProps} from "vue";
+import {reactive, watch} from "vue";
 import {FormMode} from "@/Shared/Enum/FormType.js";
-import {router} from "@inertiajs/vue3";
 import usePostPatchAxios from "@/Shared/Hooks/usePostPatchAxios.js";
 import {axiosCreateProduct, axiosUpdateProduct} from "@/Pages/Product/ProductAxiosConfig.js";
 import {productKeys} from "@/Pages/Product/ProductKey.js";
-import useNotification from "@/Shared/Hooks/useNotification.js";
 
 export default function useProductFormController(props) {
     /**
@@ -24,7 +22,7 @@ export default function useProductFormController(props) {
     watch(() => props.product, (newProduct) => {
         if (newProduct) {
             formState.name = newProduct.name;
-            formState.price = newProduct.price;
+            formState.price = newProduct.price && parseInt(newProduct.price);
         }
     }, {immediate: true});
 
@@ -55,6 +53,7 @@ export default function useProductFormController(props) {
      * Handle Submit
      */
     const handleSubmit = () => {
+        // formState.validate()
 
         if (formMode === FormMode.CREATE) {
             mutateCreateProduct({data: formState})
@@ -68,7 +67,18 @@ export default function useProductFormController(props) {
         // return mutateUpdateProduct({data: formState, id: id})
     }
 
+    /**
+     * Handle rules
+     */
+    const rules = {
+        name: [{required: true, message: 'Nama produk harus diisi', trigger: 'blur'}, {
+            min: 3, message: 'Nama produk minimal 3 karakter', trigger: 'blur'
+        },], price: [{required: true, message: 'Harga produk harus diisi', trigger: 'blur'}, {
+            type: 'number', message: 'Harga produk harus berupa angka', trigger: 'blur'
+        },],
+    }
+
     return {
-        formMode, formState, handleSubmit
+        formMode, formState, handleSubmit, rules
     }
 }

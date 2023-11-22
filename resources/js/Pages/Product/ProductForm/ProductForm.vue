@@ -1,7 +1,7 @@
 <script setup>
 import DefaultLayout from "@/Layouts/DefaultLayout.vue";
 import {Head, Link} from "@inertiajs/vue3";
-import {defineProps} from 'vue';
+import {defineProps, watch} from 'vue';
 import {ArrowLeftOutlined} from "@ant-design/icons-vue";
 import {FormMode} from "@/Shared/Enum/FormType.js";
 import useProductFormController from "@/Pages/Product/ProductForm/ProductFormController.js";
@@ -13,7 +13,7 @@ const props = defineProps({
     formMode: String
 })
 
-const {formMode, formState, handleSubmit} = useProductFormController(props);
+const {formMode, formState, handleSubmit, rules} = useProductFormController(props);
 
 const title = `${formMode === FormMode.CREATE ? 'Create' : 'Edit'} Product`;
 
@@ -44,16 +44,20 @@ const title = `${formMode === FormMode.CREATE ? 'Create' : 'Edit'} Product`;
 
             <a-row>
                 <a-col :span="24">
-                    <a-form layout="vertical" :model="formState">
-                        <a-form-item label="Name">
+                    <a-form layout="vertical" :model="formState"
+                            @finish="handleSubmit"
+                    >
+                        <!--                    <a-form layout="vertical" :model="formState">-->
+                        <a-form-item label="Name" name="name" required :rules="rules.name">
                             <a-input v-model:value="formState.name" placeholder="Name.."/>
                         </a-form-item>
-                        <a-form-item label="Price">
+                        <a-form-item label="Price" name="price" required :rules="rules.price">
                             <a-input-number v-model:value="formState.price" prefix="Rp" style="width: 100%"
                                             placeholder="Price.."/>
                         </a-form-item>
-                        <a-form-item :wrapper-col="{span: 14}">
-                            <a-button type="primary" @click="handleSubmit">Submit</a-button>
+                        <a-form-item :wrapper-col="{span: 14}" class="pt-4">
+                            <!--                            <a-button type="primary" @click="handleSubmit">Submit</a-button>-->
+                            <a-button type="primary" html-type="submit">Submit</a-button>
                         </a-form-item>
                     </a-form>
                 </a-col>

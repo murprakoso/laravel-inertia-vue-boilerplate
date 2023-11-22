@@ -29,7 +29,6 @@ const usePostPatchAxios = (props) => {
     };
 
     const onSuccessFn = async (data) => {
-        console.log('data', data)
         setTimeout(() => {
             openNotification({
                 type: `${data.type}`,
