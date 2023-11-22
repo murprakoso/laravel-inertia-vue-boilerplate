@@ -4,7 +4,7 @@ import {router} from "@inertiajs/vue3";
 import usePostPatchAxios from "@/Shared/Hooks/usePostPatchAxios.js";
 import {axiosCreateProduct, axiosUpdateProduct} from "@/Pages/Product/ProductAxiosConfig.js";
 import {productKeys} from "@/Pages/Product/ProductKey.js";
-import useNotification from "@/Shared/Hooks/Notification.js";
+import useNotification from "@/Shared/Hooks/useNotification.js";
 
 export default function useProductFormController(props) {
     /**

@@ -4,7 +4,7 @@ import {DeleteOutlined, EditOutlined, ReloadOutlined} from "@ant-design/icons-vu
 import useProductIndexController from "@/Pages/Product/ProductIndex/ProductIndexController.js";
 import {Head, Link, usePage} from "@inertiajs/vue3";
 import {h} from "vue";
-import useNotification from "@/Shared/Hooks/Notification.js";
+import useNotification from "@/Shared/Hooks/useNotification.js";
 
 const {
     productData,

@@ -16,7 +16,16 @@ import {VueQueryDevTools} from "vue-query/devtools";
                     <div class="font-medium">
                         <slot name="header"/>
                     </div>
-                    <div>Avatar</div>
+
+                    <div>
+                        <span class="font-medium">
+                            {{ $page.props.auth.user.name }}
+                        </span>
+
+                        <!--                        <DropdownLink :href="route('logout')" method="post" as="button">-->
+                        <!--                            Log Out-->
+                        <!--                        </DropdownLink>-->
+                    </div>
                 </div>
             </a-layout-header>
             <a-layout-content style="margin: 20px 16px">

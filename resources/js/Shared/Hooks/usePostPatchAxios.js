@@ -1,7 +1,6 @@
-import useNotification from "@/Shared/Hooks/Notification.js";
+import useNotification from "@/Shared/Hooks/useNotification.js";
 import {useMutation, useQueryClient} from "vue-query";
 import {router} from "@inertiajs/vue3";
-import {useRouter} from "vue-router";
 
 const usePostPatchAxios = (props) => {
     const {

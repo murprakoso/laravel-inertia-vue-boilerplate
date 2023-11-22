@@ -26,7 +26,6 @@
         "ant-design-vue": "4.x",
         "lodash": "^4.17.21",
         "vue-query": "^1.26.0",
-        "vue-request": "^2.0.4",
-        "vue-router": "^4.2.5"
+        "vue-request": "^2.0.4"
     }
 }

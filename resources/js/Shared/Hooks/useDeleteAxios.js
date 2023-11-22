@@ -1,6 +1,6 @@
 import {useMutation, useQueryClient} from 'vue-query';
 import axios from 'axios';
-import useNotification from "@/Shared/Hooks/Notification.js";
+import useNotification from "@/Shared/Hooks/useNotification.js";
 
 const useDeleteAxios = (props) => {
     const {config, invalidateQueryKey, queryParams} = props;

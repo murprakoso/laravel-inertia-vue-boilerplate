@@ -1,7 +1,7 @@
 import {watchEffect} from 'vue';
 import {useQuery, useQueryClient} from 'vue-query';
 import axios from 'axios';
-import useNotification from "@/Shared/Hooks/Notification.js";
+import useNotification from "@/Shared/Hooks/useNotification.js";
 
 const useGetAxios = (props) => {
     // Destructuring props
