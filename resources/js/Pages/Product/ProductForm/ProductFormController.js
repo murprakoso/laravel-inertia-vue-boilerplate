@@ -1,16 +1,22 @@
 import {reactive, ref, watch, defineProps} from "vue";
 import {FormMode} from "@/Shared/Enum/FormType.js";
 import {router} from "@inertiajs/vue3";
+import usePostPatchAxios from "@/Shared/Hooks/usePostPatchAxios.js";
+import {axiosCreateProduct, axiosUpdateProduct} from "@/Pages/Product/ProductAxiosConfig.js";
+import {productKeys} from "@/Pages/Product/ProductKey.js";
+import useNotification from "@/Shared/Hooks/Notification.js";
 
 export default function useProductFormController(props) {
-    const {formMode} = props
-    const formState = reactive({
-        name: '', price: '',
-    });
-
     /**
      * Form State
      */
+    const {formMode, product} = props
+    const formState = reactive({
+        name: '', price: '',
+    });
+    // Params
+    const {id} = product;
+
 
     /**
      * Watch Product
@@ -22,25 +28,44 @@ export default function useProductFormController(props) {
         }
     }, {immediate: true});
 
+
+    /**
+     * Handle Mutation [Create and Update]
+     */
+    const {
+        mutate: mutateCreateProduct, isLoading: mutateCreateProductIsLoading
+    } = usePostPatchAxios({
+        config: () => axiosCreateProduct(),
+        redirect: '/products',
+        invalidateQueryKey: productKeys.lists._def,
+        onSuccessTakeover: false,
+    })
+
+    const {
+        mutate: mutateUpdateProduct, isLoading: mutateUpdateProductIsLoading
+    } = usePostPatchAxios({
+        config: (id) => axiosUpdateProduct(id),
+        redirect: '/products',
+        invalidateQueryKey: productKeys.lists._def,
+        onSuccessTakeover: false,
+    })
+
+
     /**
      * Handle Submit
      */
     const handleSubmit = () => {
-        // console.log('formState', formState);
 
         if (formMode === FormMode.CREATE) {
-            // console.log('create')
-            router.post('/products', formState)
-            return
+            mutateCreateProduct({data: formState})
+            return;
         }
 
-        // console.log('update')
-        // console.log('update: ', props.product)
-        router.put(`/products/${props.product.id}`, {product: props.product, ...formState})
-        // router.put(route('products.update', {product: props.product}), formState)
+        if (formMode === FormMode.UPDATE) {
+            return mutateUpdateProduct({data: formState, id: id})
+        }
 
-        // router.get('/products');
-        // return;
+        // return mutateUpdateProduct({data: formState, id: id})
     }
 
     return {

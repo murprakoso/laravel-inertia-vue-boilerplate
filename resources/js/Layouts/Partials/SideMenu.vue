@@ -26,7 +26,8 @@ const handleClick = (e) => {
 const setActiveKeys = () => {
     const {pathname} = window.location;
     const splitPathname = pathname.split("/");
-    const currentPath = splitPathname[splitPathname.length - 1];
+    // const currentPath = splitPathname[splitPathname.length - 1];
+    const currentPath = splitPathname[1];
 
     const menuItem = items.find((item) => {
         if (item.key === currentPath) {

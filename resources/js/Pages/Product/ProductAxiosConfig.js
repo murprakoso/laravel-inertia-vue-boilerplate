@@ -20,6 +20,7 @@ export const axiosCreateProduct = () => {
 }
 
 export const axiosUpdateProduct = (id) => {
+    console.log('id', id)
     return {
         method: 'PATCH',
         url: `/products/${id}`,

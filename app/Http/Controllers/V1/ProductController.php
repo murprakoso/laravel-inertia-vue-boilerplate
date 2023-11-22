@@ -72,20 +72,23 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request): JsonResponse
     {
         $request->validate([
             'name' => 'required|string',
             'price' => 'required|numeric',
         ]);
 
-        Product::insert([
+        $product = Product::create([
             'name' => $request->input('name'),
             'price' => $request->input('price')
         ]);
 
-        session()->flash('status', ['type' => 'success', 'message' => 'Data berhasil ditambahkan.']);
-        return redirect()->route('products.index');
+        return response()->json([
+            'type' => 'success',
+            'message' => 'Data berhasil ditambahkan.',
+            'data' => $product,
+        ]);
     }
 
     /**
@@ -104,14 +107,14 @@ class ProductController extends Controller
         return Inertia::render('Product/ProductForm/ProductForm', [
             'status' => session('status'),
             'product' => $product,
-            'formMode' => 'EDIT'
+            'formMode' => 'UPDATE'
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Product $product): RedirectResponse
+    public function update(Request $request, Product $product): JsonResponse
     {
         $request->validate([
             'name' => 'required|string',
@@ -123,8 +126,11 @@ class ProductController extends Controller
             'price' => $request->input('price')
         ]);
 
-        session()->flash('status', ['type' => 'success', 'message' => 'Data berhasil diperbarui.']);
-        return redirect()->route('products.index');
+        return response()->json([
+            'type' => 'success',
+            'message' => 'Data berhasil diperbarui.',
+            'data' => $product,
+        ]);
     }
 
     /**
