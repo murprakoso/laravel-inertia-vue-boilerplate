@@ -86,12 +86,13 @@ export default function useProductFormController(props) {
     const rules = validate({
         name: [
             {required: true, message: rule.required, trigger: 'blur'},
-            {min: 3, message: rule.min.numeric, trigger: 'blur'},
-            {max: 5, message: rule.max.numeric, trigger: 'blur'},
+            {min: 3, message: rule.min, trigger: 'blur'},
+            {max: 5, message: rule.max, trigger: 'blur'},
+            {type: 'string', message: rule.type, trigger: 'blur'},
         ],
         price: [
             {required: true, message: rule.required, trigger: 'blur'},
-            {type: 'number', message: rule.numeric, trigger: 'blur'},
+            {type: 'number', message: rule.type, trigger: 'blur'},
         ],
     });
 

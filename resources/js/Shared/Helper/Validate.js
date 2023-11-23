@@ -8,14 +8,20 @@ export default function validate(params) {
      * @param max
      * @returns {*}
      */
-    const replaceMessage = (message, attribute, min, max) => {
+    const replaceMessage = (message, attribute, len, max, min, type) => {
         console.log('message: ', message)
         let updatedMessage = message.replace(/:attribute/g, attribute);
-        if (min !== undefined) {
-            updatedMessage = updatedMessage.replace(/:min/g, min);
+        if (len !== undefined) {
+            updatedMessage = updatedMessage.replace(/:len/g, len);
         }
         if (max !== undefined) {
             updatedMessage = updatedMessage.replace(/:max/g, max);
+        }
+        if (min !== undefined) {
+            updatedMessage = updatedMessage.replace(/:min/g, min);
+        }
+        if (type !== undefined) {
+            updatedMessage = updatedMessage.replace(/:type/g, type);
         }
         return updatedMessage;
     }
@@ -35,8 +41,22 @@ export default function validate(params) {
             //         rule.message = rule.message.replace(/:min/g, rule.min);
             //     }
             // }
+            // if (rule.message) {
+            //     rule.message = replaceMessage(rule.message, attribute, rule.min, rule.max);
+            // }
             if (rule.message) {
-                rule.message = replaceMessage(rule.message, attribute, rule.min, rule.max);
+                let replacements = {
+                    attribute,
+                    len: rule.len,
+                    max: rule.max,
+                    min: rule.min,
+                    type: rule.type,
+                };
+
+                rule.message = Object.keys(replacements).reduce((acc, key) => {
+                    const regex = new RegExp(`:${key}`, 'g');
+                    return acc.replace(regex, replacements[key]);
+                }, rule.message);
             }
             return rule;
         })
