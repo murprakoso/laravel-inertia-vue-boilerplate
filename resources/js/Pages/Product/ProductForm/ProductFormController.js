@@ -3,6 +3,8 @@ import {FormMode} from "@/Shared/Enum/FormType.js";
 import usePostPatchAxios from "@/Shared/Hooks/usePostPatchAxios.js";
 import {axiosCreateProduct, axiosUpdateProduct} from "@/Pages/Product/ProductAxiosConfig.js";
 import {productKeys} from "@/Pages/Product/ProductKey.js";
+import rule from "@/Shared/Lang/validation.js"
+import validate from "@/Shared/Helper/Validate.js";
 
 export default function useProductFormController(props) {
     /**
@@ -14,7 +16,6 @@ export default function useProductFormController(props) {
     });
     // Params
     const {id} = product;
-
 
     /**
      * Watch Product
@@ -37,6 +38,7 @@ export default function useProductFormController(props) {
         redirect: '/products',
         invalidateQueryKey: productKeys.lists._def,
         onSuccessTakeover: false,
+        onErrorTakeover: false,
     })
 
     const {
@@ -70,13 +72,29 @@ export default function useProductFormController(props) {
     /**
      * Handle rules
      */
-    const rules = {
-        name: [{required: true, message: 'Nama produk harus diisi', trigger: 'blur'}, {
-            min: 3, message: 'Nama produk minimal 3 karakter', trigger: 'blur'
-        },], price: [{required: true, message: 'Harga produk harus diisi', trigger: 'blur'}, {
-            type: 'number', message: 'Harga produk harus berupa angka', trigger: 'blur'
-        },],
-    }
+    /* eslint-disable */
+    // const rules = {
+    //     name: [
+    //         {required: true, message: 'Nama produk harus diisi', trigger: 'blur'},
+    //         {min: 3, message: 'Nama produk minimal 3 karakter', trigger: 'blur'},
+    //     ],
+    //     price: [
+    //         {required: true, message: 'Harga produk harus diisi', trigger: 'blur'},
+    //         {type: 'number', message: 'Harga produk harus berupa angka', trigger: 'blur'},
+    //     ],
+    // }
+    const rules = validate({
+        name: [
+            {required: true, message: rule.required, trigger: 'blur'},
+            {min: 3, message: rule.min.numeric, trigger: 'blur'},
+            {max: 5, message: rule.max.numeric, trigger: 'blur'},
+        ],
+        price: [
+            {required: true, message: rule.required, trigger: 'blur'},
+            {type: 'number', message: rule.numeric, trigger: 'blur'},
+        ],
+    });
+
 
     return {
         formMode, formState, handleSubmit, rules

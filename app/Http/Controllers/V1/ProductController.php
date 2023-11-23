@@ -75,7 +75,7 @@ class ProductController extends Controller
     public function store(Request $request): JsonResponse
     {
         $request->validate([
-            'name' => 'required|string',
+            'name' => 'required|string|min:3',
             'price' => 'required|numeric',
         ]);
 

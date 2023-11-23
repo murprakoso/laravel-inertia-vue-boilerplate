@@ -45,13 +45,13 @@ const title = `${formMode === FormMode.CREATE ? 'Create' : 'Edit'} Product`;
             <a-row>
                 <a-col :span="24">
                     <a-form layout="vertical" :model="formState"
-                            @finish="handleSubmit"
-                    >
+                            @finish="handleSubmit">
                         <!--                    <a-form layout="vertical" :model="formState">-->
-                        <a-form-item label="Name" name="name" required :rules="rules.name">
+                        <a-form-item label="Name" name="name" required
+                                     :rules="rules?.name">
                             <a-input v-model:value="formState.name" placeholder="Name.."/>
                         </a-form-item>
-                        <a-form-item label="Price" name="price" required :rules="rules.price">
+                        <a-form-item label="Price" name="price" required :rules="rules?.price">
                             <a-input-number v-model:value="formState.price" prefix="Rp" style="width: 100%"
                                             placeholder="Price.."/>
                         </a-form-item>

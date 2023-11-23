@@ -12,6 +12,7 @@ const usePostPatchAxios = (props) => {
         redirect,
         queryParams,
         onSuccessTakeover = false,
+        onErrorTakeover = false,
     } = props;
 
     // const navigate = useNavigate();
@@ -75,7 +76,8 @@ const usePostPatchAxios = (props) => {
             if (!onSuccessTakeover) await onSuccessFn(data);
         },
         onError: async (err) => {
-            await onErrorFn(err);
+            // await onErrorFn(err);
+            if (!onErrorTakeover) await onErrorFn(err);
         },
     });
 
