@@ -23,8 +23,8 @@ class UserRequest extends FormRequest
     {
         $user = $this->route('user');
 
-        $name = 'required|string|max:30';
-        if ($this->method() == 'PUT') {
+        $name = 'required|string|min:3|max:30';
+        if ($this->method() == 'PUT' || $this->method() == 'PATCH') {
             $email = 'required|string|email|max:255|unique:users,email,' . $user->id;
             $password = 'confirmed';
         } else {

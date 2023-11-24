@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UserRequest;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -59,17 +62,40 @@ class UserController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): Response
     {
-        //
+        return Inertia::render('User/UserForm/UserForm', [
+            'formMode' => 'CREATE'
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(UserRequest $request): JsonResponse
     {
-        //
+        $validator = Validator::make($request->all(), $request->rules());
+        if ($validator->fails()) {
+            return response()->json($validator->messages(), 422);
+        }
+
+        try {
+            $user = DB::transaction(function () use ($request) {
+                User::create([
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'password' => bcrypt($request->password),
+                ]);
+            });
+
+            return response()->json([
+                'type' => 'success',
+                'message' => 'Data berhasil ditambahkan.',
+                'data' => $user,
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json($th->getMessage(), 500);
+        }
     }
 
     /**
@@ -83,24 +109,54 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User $user)
+    public function edit(User $user): Response
     {
-        //
+        return Inertia::render('User/UserForm/UserForm', [
+            'user' => $user,
+            'formMode' => 'UPDATE'
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update(UserRequest $request, User $user): JsonResponse
     {
-        //
+        $validator = Validator::make($request->all(), $request->rules());
+        if ($validator->fails()) {
+            return response()->json($validator->messages(), 422);
+        }
+
+        try {
+            $updatedUser = DB::transaction(function () use ($request, $user) {
+                $user->update([
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'password' => bcrypt($request->password),
+                ]);
+            });
+
+            return response()->json([
+                'type' => 'success',
+                'message' => 'Data berhasil diperbarui.',
+                'data' => $updatedUser,
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json($th->getMessage(), 500);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user)
+    public function destroy(User $user): JsonResponse
     {
-        //
+        try {
+            $user->delete();
+
+            return response()->json(['type' => 'success', 'message' => 'Data berhasil dihapus.']);
+        } catch (\Throwable $th) {
+            return response()->json($th->getMessage(), 500);
+        }
     }
 }

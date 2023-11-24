@@ -69,6 +69,8 @@ const usePostPatchAxios = (props) => {
                 duration: 4,
             });
         }, 300)
+
+        return err.response
     }
 
     const mutation = useMutation(({data, id, id2}) => axiosPostPatch({data, id, id2}), {
