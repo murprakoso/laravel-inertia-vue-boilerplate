@@ -19,3 +19,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('products', [\App\Http\Controllers\V1\ProductController::class, 'indexAjax'])->name('products.indexAjax');
+
+Route::get('users', [\App\Http\Controllers\V1\UserController::class, 'indexAjax'])->name('users.indexAjax');
