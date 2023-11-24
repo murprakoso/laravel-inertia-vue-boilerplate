@@ -40,9 +40,9 @@ export default function useUserIndexController() {
 
     const handleDelete = async (data) => {
         try {
-            await deleteMutation.mutateAsync(data.id)
-        } catch (e) {
-            console.log(e)
+            await deleteMutation.mutateAsync({id: data.id});
+        } catch (error) {
+            console.error('Error deleting user:', error);
         }
     }
 
