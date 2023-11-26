@@ -17,7 +17,6 @@ const useGetAxios = (props) => {
         const response = await axios({
             ...config, params: queryParams,
         });
-        console.log('queryParams', queryParams)
         return response.data;
     };
 

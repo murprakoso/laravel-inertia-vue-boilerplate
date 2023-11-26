@@ -30,9 +30,6 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-//    Route::resource('users', \App\Http\Controllers\UserController::class);
-//    Route::get('/users/table', [\App\Http\Controllers\UserController::class, 'table'])->name('users.table');
-
     Route::resource('users', \App\Http\Controllers\V1\UserController::class);
 
     Route::resource('products', \App\Http\Controllers\V1\ProductController::class);
