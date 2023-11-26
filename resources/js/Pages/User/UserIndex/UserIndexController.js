@@ -60,7 +60,7 @@ export default function useUserIndexController() {
      */
         // prettier-ignore
     const UserTableProps = [{
-            title: 'No', dataIndex: 'id', key: 'no', sorter: true, width: 20, align: 'center',
+            title: 'No', dataIndex: 'id', key: 'no', sorter: true, width: '5%', align: 'center',
         }, {
             title: 'Name', dataIndex: 'name', key: 'name', sorter: true, width: 200, // align: 'center',
         }, {
