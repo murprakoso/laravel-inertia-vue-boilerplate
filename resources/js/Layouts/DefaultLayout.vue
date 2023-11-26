@@ -6,7 +6,7 @@ import {VueQueryDevTools} from "vue-query/devtools";
 
 
 const gotoProfile = async () => {
-  return router.get('/profile')
+  router.get('/profile')
 }
 
 const handleLogout = async () => {
@@ -36,11 +36,11 @@ const handleLogout = async () => {
               </a>
               <template #overlay>
                 <a-menu>
-                  <a-menu-item key="0" @click="gotoProfile">
-                    <a href="">Profile</a>
+                  <a-menu-item @click="gotoProfile">
+                    Profile
                   </a-menu-item>
                   <a-menu-divider/>
-                  <a-menu-item key="1" @click="handleLogout">
+                  <a-menu-item @click="handleLogout">
                     Logout
                   </a-menu-item>
                 </a-menu>
