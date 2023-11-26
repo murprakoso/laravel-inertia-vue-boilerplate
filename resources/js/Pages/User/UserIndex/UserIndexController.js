@@ -7,7 +7,7 @@ import useDeleteAxios from "@/Shared/Hooks/useDeleteAxios.js";
 
 export default function useUserIndexController() {
     const queryParams = reactive({
-        page: 1, results: 10, search: '', sortField: 'created_at', sortOrder: 'DESC',
+        page: 1, results: 10, search: '', sortField: 'id', sortOrder: 'DESC',
     });
 
     /**
@@ -16,7 +16,7 @@ export default function useUserIndexController() {
     const handleTableChange = (newPagination, filter, sorter) => {
         queryParams.page = newPagination.current;
         queryParams.results = newPagination.pageSize;
-        queryParams.sortField = sorter.field === 'no' ? 'id' : sorter.field;
+        queryParams.sortField = !sorter.field ? 'id' : sorter.field;
         queryParams.sortOrder = sorter.order === 'ascend' ? 'ASC' : 'DESC';
     };
 
@@ -33,9 +33,7 @@ export default function useUserIndexController() {
      * Handle Delete
      */
     const deleteMutation = useDeleteAxios({
-        config: (id) => axiosDeleteUser(id),
-        invalidateQueryKey: ['users'],
-        queryParams,
+        config: (id) => axiosDeleteUser(id), invalidateQueryKey: ['users'], queryParams,
     })
 
     const handleDelete = async (data) => {
@@ -50,15 +48,10 @@ export default function useUserIndexController() {
      * Fetch Data
      */
     const {
-        data: userData,
-        refetch: userDataRefetch,
-        isFetching: userDataIsFetching,
+        data: userData, refetch: userDataRefetch, isFetching: userDataIsFetching,
     } = useGetAxios({
-        config: axiosGetUsers(),
-        queryParams: queryParams,
-        // queryKey: ['users', queryParams],
-        queryKey: userKeys.lists(queryParams).queryKey,
-        // invalidateQueryKey: userKeys.lists(queryParams).queryKey,
+        config: axiosGetUsers(), queryParams: queryParams, // queryKey: ['users', queryParams],
+        queryKey: userKeys.lists(queryParams).queryKey, // invalidateQueryKey: userKeys.lists(queryParams).queryKey,
         removeQueryKey: userKeys.lists._def,
     })
 
@@ -66,39 +59,15 @@ export default function useUserIndexController() {
      * Handle Table Props
      */
         // prettier-ignore
-    const UserTableProps = [
-            {
-                title: 'No',
-                dataIndex: 'no',
-                key: 'no',
-                sorter: true,
-                width: 20,
-                align: 'center',
-            },
-            {
-                title: 'Name',
-                dataIndex: 'name',
-                key: 'name',
-                sorter: true,
-                width: 200,
-                // align: 'center',
-            },
-            {
-                title: 'Email',
-                dataIndex: 'email',
-                key: 'email',
-                sorter: true,
-                width: 200,
-                // align: 'center',
-            }, {
-                title: 'Actions',
-                dataIndex: 'actions',
-                key: 'actions',
-                align: 'center',
-                fixed: 'right',
-                width: '10%',
-            }
-        ];
+    const UserTableProps = [{
+            title: 'No', dataIndex: 'id', key: 'no', sorter: true, width: 20, align: 'center',
+        }, {
+            title: 'Name', dataIndex: 'name', key: 'name', sorter: true, width: 200, // align: 'center',
+        }, {
+            title: 'Email', dataIndex: 'email', key: 'email', sorter: true, width: 200, // align: 'center',
+        }, {
+            title: 'Actions', dataIndex: 'actions', key: 'actions', align: 'center', fixed: 'right', width: '10%',
+        }];
 
     return {
         queryParams,

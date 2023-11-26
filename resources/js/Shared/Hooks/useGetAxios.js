@@ -17,6 +17,7 @@ const useGetAxios = (props) => {
         const response = await axios({
             ...config, params: queryParams,
         });
+        console.log('queryParams', queryParams)
         return response.data;
     };
 
@@ -53,9 +54,7 @@ const useGetAxios = (props) => {
     watchEffect(() => {
         if (result.status === result.isIdle) {
             openNotification({
-                type: "error",
-                title: "Error",
-                message: "Terjadi Kesalahan Pada Internet Anda, Silahkan Coba Lagi.",
+                type: "error", title: "Error", message: "Terjadi Kesalahan Pada Internet Anda, Silahkan Coba Lagi.",
             });
         }
     })

@@ -9,7 +9,7 @@ import {productKeys} from "@/Pages/Product/ProductKey.js";
 
 export default function useProductIndexController() {
     const queryParams = reactive({
-        page: 1, results: 10, search: '', sortField: 'created_at', sortOrder: 'DESC',
+        page: 1, results: 10, search: '', sortField: 'id', sortOrder: 'DESC',
     });
 
     /**
@@ -18,7 +18,7 @@ export default function useProductIndexController() {
     const handleTableChange = (newPagination, filter, sorter) => {
         queryParams.page = newPagination.current;
         queryParams.results = newPagination.pageSize;
-        queryParams.sortField = sorter.field === 'no' ? 'id' : sorter.field;
+        queryParams.sortField = !sorter.field ? 'id' : sorter.field;
         queryParams.sortOrder = sorter.order === 'ascend' ? 'ASC' : 'DESC';
     };
 
@@ -74,7 +74,7 @@ export default function useProductIndexController() {
      * Handle Table Props
      */
     const ProductTableProps = [{
-        title: 'No', dataIndex: 'no', key: 'no', sorter: true, width: '5%', align: 'center',
+        title: 'No', dataIndex: 'id', key: 'no', sorter: true, width: '5%', align: 'center',
     }, {
         title: 'Name', dataIndex: 'name', key: 'name', sorter: true, width: '50%',
     }, {

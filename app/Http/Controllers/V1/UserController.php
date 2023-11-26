@@ -37,8 +37,6 @@ class UserController extends Controller
             $query->search($searchTerm);
         }
 
-        // Always order by 'id' in descending order
-        $query->orderBy('id', 'desc');
         // Apply sorting if 'sortField' and 'sortOrder' parameters are present
         if ($request->has(['sortField', 'sortOrder'])) {
             $sortField = $request->get('sortField');
