@@ -1,103 +1,105 @@
 <script setup>
-import GuestLayout from '@/Layouts/GuestLayout.vue';
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
-import { Head, Link, useForm } from '@inertiajs/vue3';
+import {Head, useForm} from '@inertiajs/vue3';
+import {LockOutlined, UserOutlined, MailOutlined} from '@ant-design/icons-vue'
 
 const form = useForm({
-    name: '',
-    email: '',
-    password: '',
-    password_confirmation: '',
+  name: '',
+  email: '',
+  password: '',
+  password_confirmation: '',
 });
 
 const submit = () => {
-    form.post(route('register'), {
-        onFinish: () => form.reset('password', 'password_confirmation'),
-    });
+  form.post(route('register'), {
+    onFinish: () => form.reset('password', 'password_confirmation'),
+  });
 };
 </script>
 
 <template>
-    <GuestLayout>
-        <Head title="Register" />
+  <Head title="Register"/>
+  <div style="background-color: #ececec;">
+    <a-row class="h-screen flex items-center justify-center">
+      <a-col :xs="22" :lg="8">
+        <a-card title="Register" :bordered="false">
+          <a-form
+              layout="vertical"
+              name="normal_register"
+              class="register-form"
+              @submit.prevent="submit"
+          >
+            <a-form-item
+                label="Name"
+                name="name"
+            >
+              <a-input v-model:value="form.name">
+                <template #prefix>
+                  <UserOutlined class="site-form-item-icon"/>
+                </template>
+              </a-input>
 
-        <form @submit.prevent="submit">
-            <div>
-                <InputLabel for="name" value="Name" />
+              <span class="text-sm text-red-600 dark:text-red-400" v-show="form.errors.name">
+                {{ form.errors.name }}
+              </span>
+            </a-form-item>
 
-                <TextInput
-                    id="name"
-                    type="text"
-                    class="mt-1 block w-full"
-                    v-model="form.name"
-                    required
-                    autofocus
-                    autocomplete="name"
-                />
+            <a-form-item
+                label="Email"
+                name="email"
+            >
+              <a-input v-model:value="form.email">
+                <template #prefix>
+                  <MailOutlined class="site-form-item-icon"/>
+                </template>
+              </a-input>
 
-                <InputError class="mt-2" :message="form.errors.name" />
-            </div>
+              <span class="text-sm text-red-600 dark:text-red-400" v-show="form.errors.email">
+                {{ form.errors.email }}
+              </span>
+            </a-form-item>
 
-            <div class="mt-4">
-                <InputLabel for="email" value="Email" />
+            <a-form-item
+                label="Password"
+                name="password"
+            >
+              <a-input-password v-model:value="form.password">
+                <template #prefix>
+                  <LockOutlined class="site-form-item-icon"/>
+                </template>
+              </a-input-password>
 
-                <TextInput
-                    id="email"
-                    type="email"
-                    class="mt-1 block w-full"
-                    v-model="form.email"
-                    required
-                    autocomplete="username"
-                />
+              <span class="text-sm text-red-600 dark:text-red-400" v-show="form.errors.password">
+                {{ form.errors.password }}
+              </span>
+            </a-form-item>
 
-                <InputError class="mt-2" :message="form.errors.email" />
-            </div>
+            <a-form-item
+                label="Confirm Password"
+                name="password_confirmation"
+            >
+              <a-input-password v-model:value="form.password_confirmation">
+                <template #prefix>
+                  <LockOutlined class="site-form-item-icon"/>
+                </template>
+              </a-input-password>
 
-            <div class="mt-4">
-                <InputLabel for="password" value="Password" />
+              <span class="text-sm text-red-600 dark:text-red-400" v-show="form.errors.password_confirmation">
+                {{ form.errors.password_confirmation }}
+              </span>
+            </a-form-item>
 
-                <TextInput
-                    id="password"
-                    type="password"
-                    class="mt-1 block w-full"
-                    v-model="form.password"
-                    required
-                    autocomplete="new-password"
-                />
+            <a-form-item>
+              Already registered? <a :href="route('login')">Login now!</a>
+            </a-form-item>
 
-                <InputError class="mt-2" :message="form.errors.password" />
-            </div>
-
-            <div class="mt-4">
-                <InputLabel for="password_confirmation" value="Confirm Password" />
-
-                <TextInput
-                    id="password_confirmation"
-                    type="password"
-                    class="mt-1 block w-full"
-                    v-model="form.password_confirmation"
-                    required
-                    autocomplete="new-password"
-                />
-
-                <InputError class="mt-2" :message="form.errors.password_confirmation" />
-            </div>
-
-            <div class="flex items-center justify-end mt-4">
-                <Link
-                    :href="route('login')"
-                    class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
-                >
-                    Already registered?
-                </Link>
-
-                <PrimaryButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Register
-                </PrimaryButton>
-            </div>
-        </form>
-    </GuestLayout>
+            <a-form-item>
+              <a-button type="primary" html-type="submit" class="login-form-button">
+                Register
+              </a-button>
+            </a-form-item>
+          </a-form>
+        </a-card>
+      </a-col>
+    </a-row>
+  </div>
 </template>
