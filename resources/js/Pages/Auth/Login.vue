@@ -30,6 +30,11 @@ const submit = () => {
     <a-row class="h-screen flex items-center justify-center">
       <a-col :xs="22" :lg="8">
         <a-card title="Login" :bordered="false">
+
+          <div v-if="status" class="mb-4 font-medium text-sm text-green-600 dark:text-green-400">
+            {{ status }}
+          </div>
+
           <a-form
               layout="vertical"
               name="normal_login"
