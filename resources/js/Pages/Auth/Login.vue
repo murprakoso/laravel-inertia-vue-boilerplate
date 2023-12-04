@@ -1,5 +1,5 @@
 <script setup>
-import {Head, useForm} from '@inertiajs/vue3';
+import {Head, Link, useForm} from '@inertiajs/vue3';
 import {LockOutlined, UserOutlined} from '@ant-design/icons-vue'
 
 defineProps({
@@ -70,7 +70,13 @@ const submit = () => {
               <a-form-item name="remember" no-style>
                 <a-checkbox v-model:checked="form.remember">Remember me</a-checkbox>
               </a-form-item>
-              <a class="login-form-forgot" :href="route('password.request')">Forgot password</a>
+
+              <Link
+                  :href="route('password.request')"
+                  class="login-form-forgot"
+              >
+                Forgot your password?
+              </Link>
             </a-form-item>
 
             <a-form-item>
@@ -78,7 +84,12 @@ const submit = () => {
                 Log in
               </a-button>
               Or
-              <a :href="route('register')">register now!</a>
+              <Link
+                  :href="route('register')"
+                  class="login-form-forgot"
+              >
+                register now!
+              </Link>
             </a-form-item>
           </a-form>
         </a-card>

@@ -1,5 +1,5 @@
 <script setup>
-import {Head, useForm} from '@inertiajs/vue3';
+import {Head, Link, useForm} from '@inertiajs/vue3';
 import {LockOutlined, UserOutlined, MailOutlined} from '@ant-design/icons-vue'
 
 const form = useForm({
@@ -89,7 +89,10 @@ const submit = () => {
             </a-form-item>
 
             <a-form-item>
-              Already registered? <a :href="route('login')">Login now!</a>
+              Already registered?
+              <Link :href="route('login')">
+                Login now!
+              </Link>
             </a-form-item>
 
             <a-form-item>
