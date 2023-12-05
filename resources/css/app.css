@@ -9,5 +9,9 @@
 }
 
 .ant-btn.ant-btn-primary {
-    @apply bg-primary hover:bg-[#002140] text-white ;
+    @apply bg-primary hover:bg-[#064680] text-white ;
+}
+
+.ant-btn.ant-btn-dangerous {
+    @apply bg-[#ff4d4f] hover:bg-[#002140] text-white ;
 }
