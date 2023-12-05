@@ -55,7 +55,8 @@ const updatePassword = () => {
           label="Current Password"
           name="current_password"
       >
-        <a-input-password v-model:value="form.current_password" autocomplete="current-password">
+        <a-input-password v-model:value="form.current_password" autocomplete="current-password"
+                          ref="currentPasswordInput">
           <template #prefix>
             <LockOutlined class="site-form-item-icon"/>
           </template>
@@ -70,7 +71,7 @@ const updatePassword = () => {
           label="New Password"
           name="password"
       >
-        <a-input-password v-model:value="form.password" autocomplete="new-password">
+        <a-input-password v-model:value="form.password" autocomplete="new-password" ref="passwordInput">
           <template #prefix>
             <LockOutlined class="site-form-item-icon"/>
           </template>

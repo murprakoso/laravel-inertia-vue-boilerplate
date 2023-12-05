@@ -4,6 +4,15 @@ import {Head} from '@inertiajs/vue3';
 import UpdateProfileInformationForm from "@/Pages/Profile/Partials/UpdateProfileInformationForm.vue";
 import UpdatePasswordForm from "@/Pages/Profile/Partials/UpdatePasswordForm.vue";
 import DeleteUserForm from "@/Pages/Profile/Partials/DeleteUserForm.vue";
+
+defineProps({
+  mustVerifyEmail: {
+    type: Boolean,
+  },
+  status: {
+    type: String,
+  },
+});
 </script>
 
 <template>
@@ -17,7 +26,10 @@ import DeleteUserForm from "@/Pages/Profile/Partials/DeleteUserForm.vue";
     <a-card class="mb-3">
       <a-row :gutter="16" class="mb-2">
         <a-col :span="12">
-          <UpdateProfileInformationForm/>
+          <UpdateProfileInformationForm
+              :must-verify-email="mustVerifyEmail"
+              :status="status"
+          />
         </a-col>
       </a-row>
     </a-card>
